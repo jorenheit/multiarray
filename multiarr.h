@@ -63,7 +63,7 @@ public:
     // Range assignment
     MultiArray &assign(size_t const (&ranges)[D][2], T const &val)
     {
-        Assign<0>::assign(*this, ranges, val);
+        Assign<0, D - 1>::assign(*this, ranges, val);
         return *this;
     }
 
@@ -111,19 +111,19 @@ private:
     }
 
     // Range assignment
-    template <size_t Level, typename Dummy = void>
+    template <size_t Level, size_t MaxLevel, typename Dummy = void>
     struct Assign
     {
         template <typename Self, typename ... Indices>
         static void assign(Self &self, size_t const (&ranges)[D][2], T const &val, Indices ... indices)
         {
             for (size_t i = ranges[Level][0]; i != ranges[Level][1]; ++i)
-                Assign<Level + 1>::assign(self, ranges, val, indices..., i);
+                Assign<Level + 1, MaxLevel>::assign(self, ranges, val, indices..., i);
         }
     };
 
-    template <typename Dummy>
-    struct Assign<D - 1, Dummy>
+    template <size_t MaxLevel, typename Dummy>
+    struct Assign<MaxLevel, MaxLevel, Dummy>
     {
         template <typename Self, typename ... Indices>
         static void assign(Self &self, size_t const (&ranges)[D][2], T const &val, Indices ... indices)
