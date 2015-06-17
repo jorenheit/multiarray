@@ -23,12 +23,6 @@
 template <typename T, std::size_t D>
 class MultiArray
 {
-    // std::vector must provide: 
-    // * constructor taking a size-variable: std::vector<T>(size_t)
-    // * begin()
-    // * end()
-    // * operator[]
-
     std::vector<T> d_data;
     std::size_t d_dimensions[D];
 
