@@ -134,9 +134,9 @@ private:
         template <typename Self, typename ... Indices>
         static void assign(Self &self, size_t const (&ranges)[D][2], T const &val, Indices ... indices)
         {
-            size_t const begin = self.indexMap(indices ..., ranges[D - 1][0]);
-            size_t const end = begin + (ranges[D - 1][1] - ranges[D - 1][0]);
-            std::fill(&self.d_data[begin], &self.d_data[end], val);
+            auto begin = self.d_data.begin() + self.indexMap(indices ..., ranges[D - 1][0]);
+            auto end = begin + (ranges[D - 1][1] - ranges[D - 1][0]);
+            std::fill(begin, end, val);
         }
     };
 
