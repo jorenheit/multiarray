@@ -20,16 +20,16 @@
 #include <vector>    // default implementation
 #include <algorithm> // std::fill
 
-template <typename T, std::size_t D, template <typename...> class Container = std::vector>
+template <typename T, std::size_t D>
 class MultiArray
 {
-    // Container must provide: 
-    // * constructor taking a size-variable: Container<T>(size_t)
+    // std::vector must provide: 
+    // * constructor taking a size-variable: std::vector<T>(size_t)
     // * begin()
     // * end()
     // * operator[]
 
-    Container<T> d_data;
+    std::vector<T> d_data;
     std::size_t d_dimensions[D];
 
 public:
@@ -80,12 +80,12 @@ public:
     }
 
     // raw access
-    Container<T> &data()
+    std::vector<T> &data()
     {
         return d_data;
     }
 
-    Container<T> const &data() const
+    std::vector<T> const &data() const
     {
         return d_data;
     }
@@ -146,10 +146,10 @@ private:
 };
 
 // convenient factory
-template <typename T, template <typename ...> class C = std::vector, typename ... Args>
-inline MultiArray<T, sizeof ... (Args), C> makeMultiArray(Args ... args)
+template <typename T, typename ... Args>
+inline MultiArray<T, sizeof ... (Args)> makeMultiArray(Args ... args)
 {
-    return MultiArray<T, sizeof ... (args), C>(args ...);
+    return MultiArray<T, sizeof ... (args)>(args ...);
 }
 
 #endif
